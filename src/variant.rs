@@ -15,11 +15,36 @@
 // ┃  file, You can obtain one at https://mozilla.org/MPL/2.0/.                ┃
 // ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
-pub mod field;
-pub mod meta;
-pub mod structure;
-pub mod variant;
+// -------- //
+// Fonction //
+// -------- //
 
-mod parser;
+/// Cherche l'attribut passé en argument parmi la liste des attributs d'un
+/// variant.
+pub fn find_attr(
+	variant: &syn::Variant,
+	attr_name: impl AsRef<str>,
+) -> Option<&syn::Attribute> {
+	variant
+		.attrs
+		.iter()
+		.find(|attr| attr.path().is_ident(attr_name.as_ref()))
+}
 
-pub use self::parser::{parse, Parser, ParserError};
+/// Récupère les features d'une variante.
+pub fn get_features(variant: &syn::Variant) -> Vec<&syn::Attribute> {
+	variant
+		.attrs
+		.iter()
+		.filter(|attr| {
+			let cfg = attr.path().is_ident("cfg").then_some(
+				attr.parse_args_with(|parser: &syn::parse::ParseBuffer| {
+					parser.parse::<syn::MetaNameValue>()
+				})
+				.ok()
+				.filter(|nv| !nv.path.is_ident("feature")),
+			);
+			cfg.is_some()
+		})
+		.collect()
+}
