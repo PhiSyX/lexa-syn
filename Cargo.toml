@@ -2,6 +2,9 @@
 name = "lexa-syn"
 version = "0.1.0"
 edition = "2021"
+license = "MPL-2.0"
+repository = "https://github.com/PhiSyX/lexa-syn"
+description = "Utilitaires pour la crate syn (proc-macro)."
 
 [dependencies]
 syn = { version = "^2.0", features = ["full"] }
