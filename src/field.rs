@@ -14,22 +14,19 @@
 
 /// Cherche l'attribut passé en argument parmi la liste des attributs d'un
 /// champ.
-pub fn find_attr(
-	field: &syn::Field,
-	attr_name: impl AsRef<str>,
-) -> Option<&syn::Attribute> {
-	field
-		.attrs
-		.iter()
-		.find(|attr| attr.path().is_ident(attr_name.as_ref()))
+pub fn find_attr(field: &syn::Field, attr_name: impl AsRef<str>) -> Option<&syn::Attribute>
+{
+	field.attrs.iter().find(|attr| attr.path().is_ident(attr_name.as_ref()))
 }
 
 /// Vérifie que la structure est une structure de champs nommés.
-pub fn is_named_fields(fields: &syn::Fields) -> bool {
+pub fn is_named_fields(fields: &syn::Fields) -> bool
+{
 	matches!(fields, syn::Fields::Named(_))
 }
 
 /// Vérifie que la structure est une structure de champs nommés.
-pub fn is_unit_fields(fields: &syn::Fields) -> bool {
+pub fn is_unit_fields(fields: &syn::Fields) -> bool
+{
 	matches!(fields, syn::Fields::Unit)
 }

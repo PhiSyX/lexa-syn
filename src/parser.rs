@@ -39,7 +39,8 @@ use syn::__private::{Span, TokenStream};
 // Interface //
 // --------- //
 
-pub trait Parser {
+pub trait Parser
+{
 	type Input: syn::parse::Parse;
 	type Err<'err>: ParserError<'err>
 	where
@@ -50,7 +51,8 @@ pub trait Parser {
 	fn analyze(&self) -> Result<TokenStream, Self::Err<'_>>;
 }
 
-pub trait ParserError<'err>: error::Error {
+pub trait ParserError<'err>: error::Error
+{
 	fn compile_error(self) -> TokenStream;
 
 	fn span(self) -> Span;
@@ -60,9 +62,8 @@ pub trait ParserError<'err>: error::Error {
 // Fonction //
 // -------- //
 
-pub fn parse<'t, P>(input: TokenStream) -> TokenStream
+pub fn parse<'t, P: 't>(input: TokenStream) -> TokenStream
 where
-	P: 't,
 	P: Parser,
 {
 	let input = syn::parse_macro_input!(input as P::Input);

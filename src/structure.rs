@@ -36,12 +36,7 @@
 
 /// Cherche l'attribut passé en argument parmi la liste des attributs d'un
 /// champ.
-pub fn find_attr(
-	field: &syn::ItemStruct,
-	attr_name: impl AsRef<str>,
-) -> Option<&syn::Attribute> {
-	field
-		.attrs
-		.iter()
-		.find(|attr| attr.path().is_ident(attr_name.as_ref()))
+pub fn find_attr(field: &syn::ItemStruct, attr_name: impl AsRef<str>) -> Option<&syn::Attribute>
+{
+	field.attrs.iter().find(|attr| attr.path().is_ident(attr_name.as_ref()))
 }
